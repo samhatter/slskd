@@ -294,6 +294,7 @@ class Rooms extends Component {
                               autoComplete="off"
                               data-lpignore="true"
                               id="room-message-input"
+                              name="room-message-input"
                               type="text"
                             />
                           }

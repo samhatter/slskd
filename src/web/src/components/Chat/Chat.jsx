@@ -319,6 +319,7 @@ class Chat extends Component {
                             autoComplete="off"
                             data-lpignore="true"
                             id="chat-message-input"
+                            name="chat-message-input"
                             type="text"
                           />
                         }
