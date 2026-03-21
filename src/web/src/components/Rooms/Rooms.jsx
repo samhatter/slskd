@@ -43,7 +43,7 @@ class Rooms extends Component {
     this.state = initialState;
 
     const handlers = createContextMenuHandlers(this, {
-      formatReply: (message) => `[${message.username}] ${message.message} --> `,
+      handlerKeys: ['reply', 'userProfile', 'browseShares', 'ignoreUser'],
     });
     Object.assign(this, handlers);
   }

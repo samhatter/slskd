@@ -1,41 +1,67 @@
 import * as userActions from './userActions';
 
+const formatReply = (message) => {
+  if (!message) {
+    return '';
+  }
+
+  if (typeof message.direction === 'string') {
+    return `${message.message} --> `;
+  }
+
+  return `[${message.username}] ${message.message} --> `;
+};
+
 /**
  * Creates context menu handlers that can be used in class components
  * @param {object} component - The component instance (component)
  * @param {object} options - Configuration options
  * @param {Function} options.getMessageRef - Function that returns the message input ref
  * @param {Function} options.focusInput - Function to focus the input
- * @param {Function} options.formatReply - Optional function to format reply text
+ * @param {string[]} options.handlerKeys - Optional list of context menu actions to show
  * @returns {object} Object containing all context menu handler methods
  */
 export const createContextMenuHandlers = (component, options = {}) => {
   const {
     getMessageRef = () => component.messageRef,
     focusInput = () => component.focusInput(),
-    formatReply = (message) => `${message.message} --> `,
+    handlerKeys = ['reply', 'userProfile', 'browseShares', 'ignoreUser'],
   } = options;
+
+  const actionMap = {
+    browseShares: {
+      handlerName: 'handleBrowseShares',
+      label: 'Browse Shares',
+    },
+    ignoreUser: {
+      handlerName: 'handleIgnoreUser',
+      label: 'Ignore User',
+    },
+    reply: {
+      handlerName: 'handleReply',
+      label: 'Reply',
+    },
+    userProfile: {
+      handlerName: 'handleUserProfile',
+      label: 'User Profile',
+    },
+  };
 
   return {
     getContextMenuActions() {
-      return [
-        {
-          handleClick: component.handleReply,
-          label: 'Reply',
-        },
-        {
-          handleClick: component.handleUserProfile,
-          label: 'User Profile',
-        },
-        {
-          handleClick: component.handleBrowseShares,
-          label: 'Browse Shares',
-        },
-        {
-          handleClick: component.handleIgnoreUser,
-          label: 'Ignore User',
-        },
-      ];
+      return handlerKeys
+        .map((key) => {
+          const action = actionMap[key];
+          if (!action) {
+            return null;
+          }
+
+          return {
+            handleClick: component[action.handlerName],
+            label: action.label,
+          };
+        })
+        .filter(Boolean);
     },
 
     handleBrowseShares() {
