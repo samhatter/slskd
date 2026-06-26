@@ -175,6 +175,11 @@ class App extends Component {
         );
     }
 
+    const themeLink = document.createElement('link');
+    themeLink.rel = 'stylesheet';
+    themeLink.href = '/theme.css';
+    document.head.append(themeLink);
+
     this.init();
   }
 
